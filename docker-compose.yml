@@ -1,0 +1,38 @@
+version: '3.5'
+
+services:
+  postgresql-master:
+    image: 'bitnami/postgresql:latest'
+    container_name: postgresql-master
+    ports:
+      - 5432:5432
+    volumes:
+      - 'postgresql_data:/bitnami/postgresql'
+    environment:
+      - POSTGRESQL_USERNAME=ocsen
+      - POSTGRESQL_PASSWORD=ocsen-hoc-code
+      - POSTGRESQL_DATABASE=ocsenDB
+    networks:
+      - ocsen_network
+  pg-admin:
+    container_name: pg-admin
+    image: dpage/pgadmin4:latest
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - 5050:80
+    volumes:
+      - 'pgadmin:/root/.pgadmin'
+    depends_on:
+      - postgresql-master
+    networks:
+      - ocsen_network
+
+
+volumes:
+  postgresql_data:
+  pgadmin:
+
+networks:
+  ocsen_network:
